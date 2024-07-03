@@ -44,7 +44,6 @@ const filterTableDate = () => {
 };
 const createORUpdateuSCM = (type, Part_No, Product_Name, PCS, Model) => {
     nowtype.value = type;
-    debugger;
     switch (type) {
         case "update":
             checktype.value = true;

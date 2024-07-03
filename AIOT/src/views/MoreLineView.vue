@@ -4,6 +4,7 @@ import oneLineChart from "../components/BarChart.vue";
 
 const APIUrl = inject("APIUrl");
 const axios = inject("axios");
+const VueCookies = inject("VueCookies");
 const componentKey = ref(0);
 const forceRerender = () => {
   componentKey.value += 1;
@@ -12,17 +13,21 @@ const forceRerender = () => {
 var arrlist = ref([]);
 const arritem = ref([]);
 const targetValue = ref(null);
-const item = ref(null);
-const product = ref(null);
+
 const type = ref(null);
-const strtime = ref(null);
-const endtime = ref(null);
+const strtime = ref(VueCookies.get("strtime"));
+const endtime = ref(VueCookies.get("endtime"));
+const item = ref(VueCookies.get("item"));
+const product = ref(VueCookies.get("product"));
+//預設為日報
+const reporttype = ref(
+  VueCookies.get("reporttype") === null ? "date" : VueCookies.get("reporttype")
+);
 const arrProduct = ref([]);
 const arrLine = ref([]);
 const arrCheckBox = ref([]);
 const allCheckBox = ref(false);
-//預設為日報
-const reporttype = ref("date");
+
 //如果超過下列的顏色會出現問題
 const arrBorderColor = ref([
   "#2E8B57",
@@ -75,7 +80,6 @@ const getProductData = () => {
   })
     .then(function (res) {
       arrProduct.value = res.data;
-      product.value = arrProduct.value[0];
 
       type.value = "Availability";
       getLineData();
@@ -94,7 +98,6 @@ const getItemData = () => {
   })
     .then(function (res) {
       arritem.value = res.data;
-      item.value = arritem.value[0];
 
       type.value = "Availability";
       getProductData();
@@ -106,7 +109,6 @@ const getItemData = () => {
       }
     });
 };
-getItemData();
 //後端取值
 const getData = () => {
   axios({
@@ -145,7 +147,7 @@ const getData = () => {
           data: lindata.map((value) => (value === 0 ? null : value)),
           yAxisID: "y2",
           datalabels: {
-            align: "end",
+            align: "top",
             anchor: "end",
           },
         });
@@ -301,14 +303,14 @@ const getData = () => {
             type: "linear",
             display: "true",
             position: "left",
-            min: 0,
+            // min: 0,
             max: function (context) {
               switch (type.value) {
                 case "ERR":
-                  return 2;
+                  return 1.8;
 
                 default:
-                  return 120;
+                  return 105;
               }
             },
             grid: {
@@ -354,8 +356,16 @@ const btnsearch = () => {
     alert("請選擇兩條產線以上");
     return;
   }
+  VueCookies.set("reporttype", reporttype.value, "1y");
+  VueCookies.set("strtime", strtime.value, "1y");
+  VueCookies.set("endtime", endtime.value, "1y");
+  VueCookies.set("item", item.value, "1y");
+  VueCookies.set("product", product.value, "1y");
   getData();
 };
+onMounted(() => {
+  getItemData();
+});
 const changereport = () => {
   strtime.value = null;
   endtime.value = null;

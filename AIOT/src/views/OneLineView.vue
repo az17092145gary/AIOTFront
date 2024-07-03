@@ -4,21 +4,26 @@ import oneLineChart from "../components/BarChart.vue";
 
 const APIUrl = inject("APIUrl");
 const axios = inject("axios");
+const VueCookies = inject("VueCookies");
+
 const numberfilter = inject("numberfilter");
 const componentKey = ref(0);
 const forceRerender = () => {
   componentKey.value += 1;
 };
-
 const arrlist = ref([]);
 const arrTableList = ref([]);
-const product = ref(null);
+const strtime = ref(VueCookies.get("strtime"));
+const endtime = ref(VueCookies.get("endtime"));
+const item = ref(VueCookies.get("item"));
+const product = ref(VueCookies.get("product"));
+const line = ref(VueCookies.get("line"));
+//預設為日報
+const reporttype = ref(
+  VueCookies.get("reporttype") === null ? "date" : VueCookies.get("reporttype")
+);
 const arritem = ref([]);
-const item = ref(null);
-const line = ref(null);
 const type = ref(null);
-const strtime = ref(null);
-const endtime = ref(null);
 const arrProduct = ref([]);
 const arrLine = ref([]);
 const arrDate = ref([]);
@@ -27,8 +32,6 @@ const arrAvailability = ref([]);
 const arrYieId = ref([]);
 const arrPerformance = ref([]);
 const arrOEE = ref([]);
-//預設為日報
-const reporttype = ref("date");
 //目標線(虛線)
 const arrTargetAvailability = ref([]);
 const arrTargetYieId = ref([]);
@@ -51,7 +54,6 @@ const getLineData = () => {
   })
     .then(function (res) {
       arrLine.value = res.data;
-      line.value = arrLine.value[0];
       type.value = "All";
     })
     .catch((err) => {
@@ -70,8 +72,6 @@ const getProductData = () => {
   })
     .then(function (res) {
       arrProduct.value = res.data;
-      product.value = arrProduct.value[0];
-
       type.value = "All";
       getLineData();
     })
@@ -89,8 +89,6 @@ const getItemData = () => {
   })
     .then(function (res) {
       arritem.value = res.data;
-      item.value = arritem.value[0];
-
       type.value = "All";
       getProductData();
     })
@@ -117,8 +115,7 @@ const getData = () => {
   })
     .then(function (res) {
       arrlist.value = res.data;
-
-      //塞選圖表List排除，沒有Date 等於是 綜合
+      //排除綜合值不顯示圖表，但顯示在Table
       arrlist.value = arrlist.value.filter(
         (item) =>
           item.Date !== undefined && item.Date !== null && item.Date !== ""
@@ -346,8 +343,8 @@ const getData = () => {
                 type: "linear",
                 display: "true",
                 position: "left",
-                min: 0,
-
+                //                min: 0,
+                // max: "auto",
                 grid: {
                   drawOnChartArea: false,
                 },
@@ -355,19 +352,27 @@ const getData = () => {
                   display: true,
                   text: "PCS",
                 },
+                afterDataLimits: function (scale) {
+                  // 将最大值乘以3
+                  scale.max *= 5;
+                },
               },
               y2: {
                 type: "linear",
                 display: "true",
                 position: "right",
-                min: 0,
-                max: 120,
+                // min: 70,
+                // max: 110,
                 grid: {
                   drawOnChartArea: false,
                 },
                 title: {
                   display: true,
                   text: "百分比(%)",
+                },
+                afterDataLimits: function (scale) {
+                  scale.max += 5;
+                  scale.min = scale.min - 10 < 0 ? 0 : scale.min - 10;
                 },
               },
             },
@@ -554,14 +559,19 @@ const getData = () => {
               type: "linear",
               display: "true",
               position: "left",
-              min: 0,
-              max: 120,
+              // min: 0,
+              //max: 120,
               grid: {
                 drawOnChartArea: false,
               },
               title: {
                 display: true,
                 text: "百分比(%)",
+              },
+              //修改Y軸最大值或最小值
+              afterDataLimits: function (scale) {
+                scale.max += 5;
+                scale.min = scale.min - 10 < 0 ? 0 : scale.min - 10;
               },
             },
           },
@@ -595,13 +605,18 @@ const btnsearch = () => {
     alert("開始時間大於結束時間，請重新選擇");
     return;
   }
-  console.log(strtime.value);
-  console.log(endtime.value);
+  VueCookies.set("reporttype", reporttype.value, "1y");
+  VueCookies.set("strtime", strtime.value, "1y");
+  VueCookies.set("endtime", endtime.value, "1y");
+  VueCookies.set("item", item.value, "1y");
+  VueCookies.set("product", product.value, "1y");
+  VueCookies.set("line", line.value, "1y");
   getData();
 };
 onMounted(() => {
   getItemData();
 });
+
 const changereport = () => {
   strtime.value = null;
   endtime.value = null;
@@ -624,7 +639,7 @@ const changereport = () => {
           class="btn btn-secondary"
           @change="changereport"
         >
-          <option value="date" selected>日報</option>
+          <option value="date">日報</option>
           <option value="week">周報</option>
           <option value="month">月報</option>
         </select></span
@@ -664,8 +679,7 @@ const changereport = () => {
           id="productSearchSelect"
           @change="getLineData"
         >
-          <option
-            v-for="productData in arrProduct">
+          <option v-for="productData in arrProduct">
             {{ productData }}
           </option>
         </select></span

@@ -1,16 +1,19 @@
 <script setup>
+import { onMounted } from "vue";
 import { ref, inject } from "vue";
 
 const axios = inject("axios");
 // 後端網址
 const APIUrl = inject("APIUrl");
+const VueCookies = inject("VueCookies");
 const arritem = ref([]);
-const item = ref(null);
 const arrDataList = ref([]);
-const product = ref(null);
-const line = ref(null);
-const strtime = ref(null);
-const endtime = ref(null);
+const strtime = ref(VueCookies.get("strtime"));
+const endtime = ref(VueCookies.get("endtime"));
+const item = ref(VueCookies.get("item"));
+const product = ref(VueCookies.get("product"));
+const line = ref(VueCookies.get("line"));
+
 const arrProduct = ref([]);
 const arrLine = ref([]);
 const arrDeviceName = ref([]);
@@ -42,7 +45,7 @@ const getLineData = () => {
   })
     .then(function (res) {
       arrLine.value = res.data;
-      line.value = arrLine.value[0];
+
       getDeviceData();
     })
     .catch((err) => {
@@ -61,7 +64,7 @@ const getProductData = () => {
   })
     .then(function (res) {
       arrProduct.value = res.data;
-      product.value = arrProduct.value[0];
+
       getLineData();
     })
     .catch((err) => {
@@ -78,7 +81,7 @@ const getItemData = () => {
   })
     .then(function (res) {
       arritem.value = res.data;
-      item.value = arritem.value[0];
+
       getProductData();
     })
     .catch((err) => {
@@ -88,7 +91,7 @@ const getItemData = () => {
       }
     });
 };
-getItemData();
+
 const getData = () => {
   axios({
     method: "get",
@@ -125,11 +128,19 @@ const btnsearch = () => {
     alert("開始時間大於結束時間，請重新選擇");
     return;
   }
+  VueCookies.set("strtime", strtime.value, "1y");
+  VueCookies.set("endtime", endtime.value, "1y");
+  VueCookies.set("item", item.value, "1y");
+  VueCookies.set("product", product.value, "1y");
+  VueCookies.set("line", line.value, "1y");
   getData();
 };
 const numberfilter = (value) => {
   return value.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
 };
+onMounted(() => {
+  getItemData();
+});
 </script>
 <template>
   <div

@@ -58,64 +58,144 @@ getItemData();
                 aria-labelledby="navbarReportSystem"
               >
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/oneLine"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/oneLine"
                     >單線圖表</RouterLink
+                  > -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/oneLine"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
+                    單線圖表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/avgErr"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/avgErr"
                     >機台平均臨停統計圖
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/avgErr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    機台平均臨停統計圖
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/oneErr"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/oneErr"
                     >機台臨停次數統計圖
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/oneErr"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    機台臨停次數統計圖
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink
+                  <!-- <RouterLink
                     class="btn btn-outline-light"
                     to="/oneLineERROrderView"
                   >
                     異常碼明細表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/oneLineERROrderView"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    異常碼明細表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/stopTime"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/stopTime"
                     >機台停機時間明細表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/stopTime"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    機台停機時間明細表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/oneLineTable"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/oneLineTable"
                     >單線三率明細表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/oneLineTable"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    單線三率明細表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink
+                  <!-- <RouterLink
                     class="btn btn-outline-light"
                     to="/oneLineNonTimeTable"
                     >單線缺料、機故明細表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/oneLineNonTimeTable"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    單線缺料、機故明細表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink class="btn btn-outline-light" to="/moreLine"
+                  <!-- <RouterLink class="btn btn-outline-light" to="/moreLine"
                     >多線比較圖表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/moreLine"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    多線比較圖表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink
+                  <!-- <RouterLink
                     class="btn btn-outline-light"
                     to="/moreLineOrderPerformance"
                   >
                     多線三率排名圖表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/moreLineOrderPerformance"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    多線三率排名圖表
+                  </a>
                 </li>
                 <li class="d-grid gap-2">
-                  <RouterLink
+                  <!-- <RouterLink
                     class="btn btn-outline-light"
                     to="/moreLineOrderERR"
                     >多線臨停排名圖表
-                  </RouterLink>
+                  </RouterLink> -->
+                  <a
+                    class="btn btn-outline-light"
+                    href="/moreLineOrderERR"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    多線臨停排名圖表
+                  </a>
                 </li>
               </ul>
             </li>
@@ -170,9 +250,17 @@ getItemData();
               </button>
             </li>
             <li class="nav-item d-grid gap-2">
-              <RouterLink class="btn btn-outline-light" to="/scm">
+              <!-- <RouterLink class="btn btn-outline-light" to="/scm">
                 標準產能管理</RouterLink
+              > -->
+              <a
+                class="btn btn-outline-light"
+                href="/scm"
+                target="_blank"
+                rel="noopener noreferrer"
               >
+                標準產能管理
+              </a>
             </li>
           </ul>
         </div>

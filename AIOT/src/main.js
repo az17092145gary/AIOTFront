@@ -8,6 +8,7 @@ import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
 import { format } from "date-fns";
+import VueCookies from "vue-cookies";
 
 //let APIUrl = "http://localhost:5261/AIOT/";
 let APIUrl = "http://192.168.0.83:80/AIOT/";
@@ -23,7 +24,9 @@ app.component("Loading", Loading);
 app.provide("axios", app.config.globalProperties.axios);
 app.provide("formatDate", formatDate);
 app.provide("numberfilter", numberfilter);
+app.provide("VueCookies", VueCookies);
 ///app.provide("$", $);
 app.provide("APIUrl", APIUrl);
+// app.use(VueCookies);
 app.use(router);
 app.mount("#app");
