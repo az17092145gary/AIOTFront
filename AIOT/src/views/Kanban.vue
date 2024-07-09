@@ -315,7 +315,7 @@ const getKanBanProduct = (value) => {
     });
 };
 const getKanBanData = (value) => {
-  console.log(new Date());
+  // console.log(new Date());
   axios({
     method: "get",
     url: APIUrl + "getKanBanData",
@@ -500,7 +500,7 @@ const productClick = (value) => {
     type: "bar",
     label: "平均臨停",
     backgroundColor: arrAVGStopCountList.value.map((value) => {
-      console.log(parseFloat(value));
+      // console.log(parseFloat(value));
       return parseFloat(value) < 0.5 ? "#008000" : "#FF0000";
     }),
     barThickness: 15,
@@ -524,11 +524,9 @@ const productClick = (value) => {
 const StartAndStopTimer = () => {
   debugger;
   if (timer.value) {
-
     clearInterval(timer.value);
     timer.value = null;
     btntimeCountdown.value = "Start";
-
   } else {
     timer.value = setInterval(() => {
       if (seconds.value === 0) {
@@ -658,7 +656,7 @@ watch(
       <!-- Recent Sales Start -->
       <div class="container-fluid pt-4 px-4">
         <div class="timeCountdown">
-          <h6 style="color: white">更新倒數 : {{ seconds }}</h6>
+          <h6>更新倒數 : {{ seconds }}</h6>
           <button class="btn btn-primary" @click="StartAndStopTimer">
             {{ btntimeCountdown }}
           </button>

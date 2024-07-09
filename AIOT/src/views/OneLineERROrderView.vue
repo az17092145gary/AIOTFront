@@ -41,7 +41,7 @@ const getDeviceData = () => {
     .then((res) => {
       arrDeviceName.value = res.data;
       deviceName.value = "All";
-      type.value = "ERR";
+      type.value = "NGI";
     })
     .catch((err) => {
       if (err.code === "ERR_NETWORK") {
@@ -247,7 +247,7 @@ onMounted(() => {
           name=""
           id="typesearchselect"
         >
-          <option value="ERR">臨停</option>
+          <option value="ERR" hidden>臨停</option>
           <option value="PAT" hidden>缺料</option>
           <option value="NGI">不良分類</option>
         </select></span
@@ -256,34 +256,36 @@ onMounted(() => {
         <button class="btn btn-secondary" @click="btnsearch">搜尋</button></span
       >
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th scope="col">設備名稱</th>
-          <th scope="col">日期</th>
-          <th scope="col">時間</th>
-          <th scope="col">寄存器</th>
-          <th scope="col">錯誤訊息</th>
-          <th scope="col">計數</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in arrDataList">
-          <td>{{ item.DeviceName }}</td>
-          <td>{{ item.Date }}</td>
-          <!-- <td :class="{ segmentation: changeNGI }">{{ item.Time }}</td> -->
-          <td class="segmentation">{{ item.Time }}</td>
-          <td>{{ item.Deposit }}</td>
-          <td>{{ item.ERRName }}</td>
-          <td>{{ item.Count }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">設備名稱</th>
+            <th scope="col">日期</th>
+            <!-- <th scope="col">時間</th> -->
+            <th scope="col">寄存器</th>
+            <th scope="col">錯誤訊息</th>
+            <th scope="col">計數</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in arrDataList">
+            <td>{{ item.DeviceName }}</td>
+            <td>{{ item.Date }}</td>
+            <!-- <td :class="{ segmentation: changeNGI }">{{ item.Time }}</td> -->
+            <!-- <td class="segmentation">{{ item.Time }}</td> -->
+            <td>{{ item.Deposit }}</td>
+            <td>{{ item.ERRName }}</td>
+            <td>{{ item.Count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <style scoped>
 table {
-  width: 100svw;
+  width: 70svw;
 }
 
 thead {
@@ -292,16 +294,17 @@ thead {
 
 tbody {
   text-align: center;
-  /* 將表格中的值設置為右對齊 */
 }
-/* 分列時間 */
-.segmentation {
-  white-space: pre-line;
-}
+
 th {
   top: 0;
   position: sticky;
   background: white;
+}
+
+/* 分列時間 */
+.segmentation {
+  white-space: pre-line;
 }
 
 @media screen and (min-width: 1024px) {

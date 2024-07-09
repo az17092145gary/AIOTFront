@@ -335,12 +335,23 @@ table {
 }
 .timeCountdown {
   display: flex;
+  flex-direction: row;
+  
 }
-.timeCountdown button {
-  margin-top: 0;
-  margin-left: 10px;
+.timeCountdown h6 {
+  color: white;
+  margin-top: -10px;
+  margin-left: 18px;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
-  font-size: 0.6svw;
+  font-size: 0.7rem;
+}
+.timeCountdown button {
+  margin-top: -15px;
+  margin-left: 15px;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+  font-size: 0.6rem;
 }

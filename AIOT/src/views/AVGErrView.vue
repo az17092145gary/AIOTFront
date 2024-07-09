@@ -15,12 +15,18 @@ const componentKey = ref(0);
 const forceRerender = () => {
   componentKey.value += 1;
 };
+
 const arritem = ref([]);
+const arrDataList = ref([]);
 const strtime = ref(VueCookies.get("strtime"));
 const endtime = ref(VueCookies.get("endtime"));
 const item = ref(VueCookies.get("item"));
 const product = ref(VueCookies.get("product"));
 const line = ref(VueCookies.get("line"));
+
+const reporttype = ref(
+  VueCookies.get("reporttype") === null ? "date" : VueCookies.get("reporttype")
+);
 
 const deviceName = ref(null);
 const labelName = ref(null);
@@ -31,8 +37,8 @@ const arrTarget = ref([]);
 const type = ref(null);
 const arrDate = ref([]);
 const arrCount = ref([]);
-const arrAllTime = ref([]);
 const arrAVGCount = ref([]);
+
 const avgErrChartData = ref({ labels: [], datasets: [] });
 const avgErrChartOptions = ref({
   responsive: true,
@@ -114,7 +120,6 @@ const getItemData = () => {
       }
     });
 };
-getItemData();
 
 const getData = () => {
   axios({
@@ -129,21 +134,21 @@ const getData = () => {
       type: type.value,
       device: deviceName.value,
       avg: "avg",
+      reporttype: reporttype.value,
     },
   })
     .then((res) => {
       arrDate.value = [];
       arrAVGCount.value = [];
-      arrAllTime.value = [];
       arrCount.value = [];
       arrTarget.value = [];
-      res.data.forEach((data) => {
+      res.data.tempChartData.forEach((data) => {
         arrDate.value.push(data.Date);
         arrAVGCount.value.push(data.AVGCount);
-        arrAllTime.value.push(data.AllTime);
         arrCount.value.push(data.Count);
         arrTarget.value.push(0.5);
       });
+      arrDataList.value = res.data.tempTableData;
 
       switch (type.value) {
         case "ERR":
@@ -306,6 +311,9 @@ const btnsearch = () => {
   VueCookies.set("line", line.value, "1y");
   getData();
 };
+onMounted(() => {
+  getItemData();
+});
 </script>
 <template>
   <div
@@ -319,17 +327,28 @@ const btnsearch = () => {
     <h1>機台平均臨停統計圖</h1>
     <div id="divsearchBar" style="display: flex">
       <span class="btn btn-secondary"
+        >報告:<select
+          v-model="reporttype"
+          class="btn btn-secondary"
+          @change="changereport"
+        >
+          <option value="date">日報</option>
+          <option value="week">周報</option>
+          <option value="month">月報</option>
+        </select></span
+      >
+      <span class="btn btn-secondary"
         >開始日期:<input
           v-model="strtime"
           class="btn btn-secondary"
-          type="date"
+          :type="reporttype"
           id="strtime"
       /></span>
       <span class="btn btn-secondary"
         >結束日期:<input
           v-model="endtime"
           class="btn btn-secondary"
-          type="date"
+          :type="reporttype"
           id="endtime"
       /></span>
       <span class="btn btn-secondary"
@@ -402,9 +421,42 @@ const btnsearch = () => {
         :options="avgErrChartOptions"
       />
     </div>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">設備名稱</th>
+            <th scope="col">日期</th>
+            <th scope="col">時間</th>
+            <th scope="col">寄存器</th>
+            <th scope="col">錯誤訊息</th>
+            <th scope="col">計數</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in arrDataList">
+            <td>{{ item.DeviceName }}</td>
+            <td>{{ item.Date }}</td>
+            <td class="segmentation" >{{ item.Time }}</td>
+            <td>{{ item.Deposit }}</td>
+            <td>{{ item.ERRName }}</td>
+            <td>{{ item.Count }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 <style scoped>
+table{
+  width: 75svw;
+}
+/*鎖定Table的th */
+th {
+  top: 0;
+  position: sticky;
+  background: white;
+}
 @media screen and (min-width: 1024px) {
   /* 大屏幕样式 */
   span {

@@ -83,10 +83,7 @@ getItemData();
                     機台平均臨停統計圖
                   </a>
                 </li>
-                <li class="d-grid gap-2">
-                  <!-- <RouterLink class="btn btn-outline-light" to="/oneErr"
-                    >機台臨停次數統計圖
-                  </RouterLink> -->
+                <!-- <li class="d-grid gap-2">
                   <a
                     class="btn btn-outline-light"
                     href="/oneErr"
@@ -95,7 +92,7 @@ getItemData();
                   >
                     機台臨停次數統計圖
                   </a>
-                </li>
+                </li> -->
                 <li class="d-grid gap-2">
                   <!-- <RouterLink
                     class="btn btn-outline-light"
@@ -226,7 +223,7 @@ getItemData();
                 </li>
               </ul>
             </li>
-            <li class="nav-item d-grid gap-2">
+            <!-- <li class="nav-item d-grid gap-2">
               <button
                 type="button"
                 class="btn btn-outline-light dropdown-toggle"
@@ -237,7 +234,7 @@ getItemData();
               >
                 即時監看系統
               </button>
-            </li>
+            </li> -->
             <li class="nav-item d-grid gap-2">
               <button
                 type="button"

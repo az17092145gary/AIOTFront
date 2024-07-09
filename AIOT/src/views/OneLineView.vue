@@ -787,6 +787,7 @@ const changereport = () => {
 .red-text {
   color: red;
 }
+/*凍結Table最上層*/
 th {
   top: 0;
   position: sticky;
