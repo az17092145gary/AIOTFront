@@ -60,7 +60,7 @@ const getLineData = () => {
   })
     .then(function (res) {
       arrLine.value = res.data;
-      type.value = "ERR";
+      type.value = "NGI";
       getDeviceData();
     })
     .catch((err) => {
@@ -79,7 +79,7 @@ const getProductData = () => {
   })
     .then(function (res) {
       arrProduct.value = res.data;
-      type.value = "ERR";
+      type.value = "NGI";
       getLineData();
     })
     .catch((err) => {
@@ -96,7 +96,7 @@ const getItemData = () => {
   })
     .then(function (res) {
       arritem.value = res.data;
-      type.value = "ERR";
+      type.value = "NGI";
       getProductData();
     })
     .catch((err) => {

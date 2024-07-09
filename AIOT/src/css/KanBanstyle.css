@@ -341,15 +341,16 @@ table {
 .timeCountdown h6 {
   color: white;
   margin-top: -10px;
-  margin-left: 18px;
+  margin-left: 8px;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 .timeCountdown button {
+  position: relative;
   margin-top: -15px;
-  margin-left: 15px;
+  margin-left: 6px;
   margin-bottom: 0.5rem;
   font-weight: 500;
   line-height: 1.2;

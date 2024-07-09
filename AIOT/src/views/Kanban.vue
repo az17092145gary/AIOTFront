@@ -6,12 +6,15 @@ import {
   getCurrentInstance,
   watch,
   onUnmounted,
-  computed,
 } from "vue";
 import { useRouter } from "vue-router";
+//稼動率圖表
 import AvailabilityChartView from "../components/BarChart.vue";
+//良率圖表
 import YieIdChartView from "../components/BarChart.vue";
+//生產效率圖表
 import PerformanceChartView from "../components/BarChart.vue";
+//平均臨停圖表
 import AVGStopCountChartView from "../components/BarChart.vue";
 
 const axios = inject("axios");
@@ -40,10 +43,12 @@ const tempYAvailabilityList = ref([]);
 const tempYYieIdList = ref([]);
 const tempYPerformanceList = ref([]);
 const tempYAVGStopCountList = ref([]);
-//15秒更新一次
+
+//設定15秒，自動從後端撈取資料
 const seconds = ref(15);
 const timer = ref(null);
-//重新渲染
+
+//網頁重新渲染
 const componentKey = ref(0);
 const forceRerender = () => {
   componentKey.value += 1;
@@ -522,7 +527,6 @@ const productClick = (value) => {
   forceRerender();
 };
 const StartAndStopTimer = () => {
-  debugger;
   if (timer.value) {
     clearInterval(timer.value);
     timer.value = null;
@@ -656,10 +660,10 @@ watch(
       <!-- Recent Sales Start -->
       <div class="container-fluid pt-4 px-4">
         <div class="timeCountdown">
-          <h6>更新倒數 : {{ seconds }}</h6>
           <button class="btn btn-primary" @click="StartAndStopTimer">
             {{ btntimeCountdown }}
           </button>
+          <h6>更新倒數 : {{ seconds }}</h6>
         </div>
         <div class="bg-secondary text-center rounded p-4">
           <div class="table-responsive">
