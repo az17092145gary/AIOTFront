@@ -265,6 +265,10 @@ watch(
             <th scope="col">寄存器</th>
             <th scope="col">錯誤訊息</th>
             <th scope="col">計數</th>
+            <th scope="col">不良率</th>
+            <th scope="col">不良占比</th>
+            <th scope="col">實際產出數量</th>
+            <th scope="col">不良總數</th>
           </tr>
         </thead>
         <tbody>
@@ -276,6 +280,10 @@ watch(
             <td>{{ item.Deposit }}</td>
             <td>{{ item.ERRName }}</td>
             <td>{{ item.Count }}</td>
+            <td>{{ item.NoYieId }}</td>
+            <td>{{ item.Proportion }}</td>
+            <td>{{ item.AO }}</td>
+            <td>{{ item.AllNGS }}</td>
           </tr>
         </tbody>
       </table>
