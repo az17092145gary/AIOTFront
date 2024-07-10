@@ -1,8 +1,7 @@
 <script setup>
-import { ref, inject, onMounted } from "vue";
+import { ref, inject, onMounted, watch } from "vue";
 import avgErrChart from "../components/BarChart.vue";
 import { LineElement } from "chart.js";
-import { watch } from "vue";
 
 const axios = inject("axios");
 // 後端網址
