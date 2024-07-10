@@ -366,16 +366,20 @@ const btnsearch = () => {
 onMounted(() => {
   getItemData();
 });
-const changereport = () => {
-  strtime.value = null;
-  endtime.value = null;
-};
 watch(allCheckBox, (newVal) => {
   arrCheckBox.value = newVal ? arrLine.value.slice() : [];
 });
 watch(arrCheckBox, () => {
   allCheckBox.value = arrCheckBox.value.length === arrLine.value.length;
 });
+//監控reporttype變更時重置strtime、endtime
+watch(
+  () => reporttype.value,
+  () => {
+    strtime.value = null;
+    endtime.value = null;
+  }
+);
 </script>
 <template>
   <div
@@ -389,11 +393,7 @@ watch(arrCheckBox, () => {
     <h1>多線比較圖表</h1>
     <div id="divsearchBar" style="display: flex">
       <span class="btn btn-secondary"
-        >報告:<select
-          v-model="reporttype"
-          class="btn btn-secondary"
-          @change="changereport"
-        >
+        >報告:<select v-model="reporttype" class="btn btn-secondary">
           <option value="date" selected>日報</option>
           <option value="week">周報</option>
           <option value="month">月報</option>

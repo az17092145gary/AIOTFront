@@ -2,6 +2,7 @@
 import { ref, inject, onMounted } from "vue";
 import avgErrChart from "../components/BarChart.vue";
 import { LineElement } from "chart.js";
+import { watch } from "vue";
 
 const axios = inject("axios");
 // 後端網址
@@ -27,10 +28,6 @@ const arrDataList = ref([]);
 
 const changeNGI = ref(true);
 
-const changereport = () => {
-  strtime.value = null;
-  endtime.value = null;
-};
 //後端取得現有的設備
 const getDeviceData = () => {
   axios({
@@ -157,6 +154,13 @@ const btnsearch = () => {
 onMounted(() => {
   getItemData();
 });
+watch(
+  () => reporttype.value,
+  () => {
+    strtime.value = null;
+    endtime.value = null;
+  }
+);
 </script>
 <template>
   <div
@@ -170,11 +174,7 @@ onMounted(() => {
     <h1>異常碼明細表</h1>
     <div id="divsearchBar" style="display: flex">
       <span class="btn btn-secondary"
-        >報告:<select
-          v-model="reporttype"
-          class="btn btn-secondary"
-          @change="changereport"
-        >
+        >報告:<select v-model="reporttype" class="btn btn-secondary">
           <option value="date" selected>日報</option>
           <option value="week">周報</option>
           <option value="month">月報</option>

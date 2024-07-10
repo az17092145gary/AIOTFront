@@ -563,7 +563,7 @@ onUnmounted(() => {
 
 //監控傳遞的參數如果有變的話，更新ItemName
 watch(
-  () => route.proxy.$router.currentRoute.value.query.item,
+  () => rouute.proxy.$router.currentRoute.vale.query.item,
   (newValue) => {
     itemName.value = newValue;
   }
@@ -720,7 +720,7 @@ watch(
                     {{ data.Availability }}
                   </td>
                   <td :class="{ 'red-text': parseFloat(data.YieId) < 98.0 }">
-                    {{ data.YieId }}
+                    {{ parseFloat(data.YieId) === 0 ? "" : data.YieId }}
                   </td>
                   <td
                     :class="{ 'red-text': parseFloat(data.AVGStopCount) > 0.5 }"

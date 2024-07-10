@@ -193,11 +193,19 @@ onMounted(() => {
   getItemData();
 });
 watch(allCheckBox, (newVal) => {
-    arrCheckBox.value = newVal ? arrLine.value.slice() : [];
+  arrCheckBox.value = newVal ? arrLine.value.slice() : [];
 });
 watch(arrCheckBox, () => {
-    allCheckBox.value = arrCheckBox.value.length === arrLine.value.length;
+  allCheckBox.value = arrCheckBox.value.length === arrLine.value.length;
 });
+//監控reporttype變更時重置strtime、endtime
+watch(
+  () => reporttype.value,
+  () => {
+    strtime.value = null;
+    endtime.value = null;
+  }
+);
 </script>
 <template>
   <div

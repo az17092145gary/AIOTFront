@@ -617,10 +617,14 @@ onMounted(() => {
   getItemData();
 });
 
-const changereport = () => {
-  strtime.value = null;
-  endtime.value = null;
-};
+//監控reporttype變更時重置strtime、endtime
+watch(
+  () => reporttype.value,
+  () => {
+    strtime.value = null;
+    endtime.value = null;
+  }
+);
 </script>
 <template>
   <div
@@ -637,7 +641,6 @@ const changereport = () => {
         >報告:<select
           v-model="reporttype"
           class="btn btn-secondary"
-          @change="changereport"
         >
           <option value="date">日報</option>
           <option value="week">周報</option>

@@ -4,6 +4,7 @@ import avgErrChart from "../components/BarChart.vue";
 import { LineElement } from "chart.js";
 import { layouts } from "chart.js";
 import { Title } from "chart.js";
+import { watch } from "vue";
 
 const axios = inject("axios");
 // 後端網址
@@ -314,6 +315,14 @@ const btnsearch = () => {
 onMounted(() => {
   getItemData();
 });
+//監控reporttype變更時重置strtime、endtime
+watch(
+  () => reporttype.value,
+  () => {
+    strtime.value = null;
+    endtime.value = null;
+  }
+);
 </script>
 <template>
   <div
@@ -437,7 +446,7 @@ onMounted(() => {
           <tr v-for="item in arrDataList">
             <td>{{ item.DeviceName }}</td>
             <td>{{ item.Date }}</td>
-            <td class="segmentation" >{{ item.Time }}</td>
+            <td class="segmentation">{{ item.Time }}</td>
             <td>{{ item.Deposit }}</td>
             <td>{{ item.ERRName }}</td>
             <td>{{ item.Count }}</td>
@@ -448,7 +457,7 @@ onMounted(() => {
   </div>
 </template>
 <style scoped>
-table{
+table {
   width: 75svw;
 }
 /*鎖定Table的th */
