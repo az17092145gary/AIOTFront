@@ -563,7 +563,7 @@ onUnmounted(() => {
 
 //監控傳遞的參數如果有變的話，更新ItemName
 watch(
-  () => rouute.proxy.$router.currentRoute.vale.query.item,
+  () => route.proxy.$router.currentRoute.value.query.item,
   (newValue) => {
     itemName.value = newValue;
   }
