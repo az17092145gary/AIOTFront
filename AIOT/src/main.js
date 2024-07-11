@@ -12,12 +12,15 @@ import VueCookies from "vue-cookies";
 
 let APIUrl = "http://localhost:5261/AIOT/";
 //let APIUrl = "http://192.168.0.83:80/AIOT/";
+
 function formatDate(val) {
   return format(new Date(val), "yyyy-MM-dd HH:mm:ss");
 }
 function numberfilter(value) {
+  value = value.toString();
   return value.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
 }
+
 const app = createApp(App);
 app.use(VueAxios, axios);
 app.component("Loading", Loading);

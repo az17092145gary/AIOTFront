@@ -5,6 +5,7 @@ const axios = inject("axios");
 // 後端網址
 const APIUrl = inject("APIUrl");
 const VueCookies = inject("VueCookies");
+const numberfilter = inject("numberfilter");
 const arritem = ref([]);
 
 const arrDataList = ref([]);
@@ -138,9 +139,7 @@ const btnsearch = () => {
   VueCookies.set("line", line.value, "1y");
   getData();
 };
-const numberfilter = (value) => {
-  return value.replace(/(\d)(?=(?:\d{3})+$)/g, "$1,");
-};
+
 onMounted(() => {
   getItemData();
 });

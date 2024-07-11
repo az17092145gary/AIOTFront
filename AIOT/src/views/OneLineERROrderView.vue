@@ -7,6 +7,7 @@ const axios = inject("axios");
 // 後端網址
 const APIUrl = inject("APIUrl");
 const VueCookies = inject("VueCookies");
+const numberfilter = inject("numberfilter");
 // 重製圖表
 const arritem = ref([]);
 const strtime = ref(VueCookies.get("strtime"));
@@ -282,8 +283,8 @@ watch(
             <td>{{ item.Count }}</td>
             <td>{{ item.NoYieId }}</td>
             <td>{{ item.Proportion }}</td>
-            <td>{{ item.AO }}</td>
-            <td>{{ item.AllNGS }}</td>
+            <td>{{ numberfilter(item.AO) }}</td>
+            <td>{{ numberfilter(item.AllNGS) }}</td>
           </tr>
         </tbody>
       </table>
