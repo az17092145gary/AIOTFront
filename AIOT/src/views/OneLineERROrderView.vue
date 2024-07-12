@@ -1,12 +1,13 @@
 <script setup>
 import { ref, inject, onMounted, watch } from "vue";
-import avgErrChart from "../components/BarChart.vue";
-import { LineElement } from "chart.js";
+// import avgErrChart from "../components/BarChart.vue";
+// import { LineElement } from "chart.js";
 
 const axios = inject("axios");
 // 後端網址
 const APIUrl = inject("APIUrl");
 const VueCookies = inject("VueCookies");
+//數字字串
 const numberfilter = inject("numberfilter");
 // 重製圖表
 const arritem = ref([]);
@@ -154,6 +155,7 @@ const btnsearch = () => {
 onMounted(() => {
   getItemData();
 });
+//重製開始與結束日期
 watch(
   () => reporttype.value,
   () => {
@@ -262,7 +264,6 @@ watch(
           <tr>
             <th scope="col">設備名稱</th>
             <th scope="col">日期</th>
-            <!-- <th scope="col">時間</th> -->
             <th scope="col">寄存器</th>
             <th scope="col">錯誤訊息</th>
             <th scope="col">計數</th>
@@ -276,8 +277,6 @@ watch(
           <tr v-for="item in arrDataList">
             <td>{{ item.DeviceName }}</td>
             <td>{{ item.Date }}</td>
-            <!-- <td :class="{ segmentation: changeNGI }">{{ item.Time }}</td> -->
-            <!-- <td class="segmentation">{{ item.Time }}</td> -->
             <td>{{ item.Deposit }}</td>
             <td>{{ item.ERRName }}</td>
             <td>{{ item.Count }}</td>
