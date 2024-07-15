@@ -202,7 +202,7 @@ getItemData();
                 class="btn btn-outline-light dropdown-toggle"
                 id="2ssss"
                 data-bs-toggle="dropdown"
-                data-bs-auto-close="outside"
+                data-bs-auto-close="true"
                 aria-expanded="false"
               >
                 看板系統
@@ -240,7 +240,7 @@ getItemData();
                 type="button"
                 class="btn btn-outline-light dropdown-toggle"
                 data-bs-toggle="dropdown"
-                data-bs-auto-close="outside"
+                data-bs-auto-close="true"
                 aria-expanded="false"
               >
                 機台保養系統
