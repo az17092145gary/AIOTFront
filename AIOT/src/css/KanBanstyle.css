@@ -342,7 +342,7 @@ table {
   margin-top: -10px;
   margin-left: 8px;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.2;
   font-size: 0.9rem;
 }
@@ -351,13 +351,13 @@ table {
   margin-top: -15px;
   margin-left: 6px;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.2;
   font-size: 0.6rem;
 }
 #nav-tab {
   background-color: black;
-  font-size: large;
+  font-size: 0.9rem;
   font-weight: 600;
   color: white;
 }
