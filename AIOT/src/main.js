@@ -22,9 +22,9 @@ function numberfilter(value) {
 }
 
 const app = createApp(App);
-app.use(VueAxios, axios);
+//app.use(VueAxios, axios);
 app.component("Loading", Loading);
-app.provide("axios", app.config.globalProperties.axios);
+app.provide("axios", axios);
 app.provide("formatDate", formatDate);
 app.provide("numberfilter", numberfilter);
 app.provide("VueCookies", VueCookies);

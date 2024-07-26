@@ -336,7 +336,6 @@ table {
 .timeCountdown {
   display: flex;
   flex-direction: row;
-  
 }
 .timeCountdown h6 {
   color: white;
@@ -355,4 +354,13 @@ table {
   font-weight: 500;
   line-height: 1.2;
   font-size: 0.6rem;
+}
+#nav-tab {
+  background-color: black;
+  font-size: large;
+  font-weight: 600;
+  color: white;
+}
+.nav-link{
+  color: white;
 }

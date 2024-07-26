@@ -22,9 +22,12 @@ const APIUrl = inject("APIUrl");
 const route = getCurrentInstance();
 const router = useRouter();
 const productList = ref([]);
+//分類名稱
 const itemName = ref(null);
 const itemList = ref([]);
+//產品名稱
 const productName = ref(null);
+// 資料
 const arrList = ref([]);
 const arrAvailabilityList = ref([]);
 const arrYieIdList = ref([]);
@@ -36,7 +39,7 @@ const arrTargetAvailabilityList = ref([]);
 const arrTargetYieIdList = ref([]);
 const arrTargetPerformanceList = ref([]);
 const arrTargetAVGStopCountList = ref([]);
-
+// 暫存資料
 const tempArrList = ref([]);
 const tempBarArrList = ref([]);
 const tempYAvailabilityList = ref([]);
@@ -543,6 +546,10 @@ const StartAndStopTimer = () => {
     btntimeCountdown.value = "Stop";
   }
 };
+const test1 = () => {
+  console.log(itemName.value);
+  console.log(productName.value);
+};
 onMounted(() => {
   itemName.value = route.proxy.$router.currentRoute.value.query.targetItem;
   itemList.value = route.proxy.$router.currentRoute.value.query.ItemList;
@@ -601,6 +608,7 @@ watch(
     <!-- Sidebar End -->
 
     <!-- Content Start -->
+
     <div class="content">
       <!-- Sales Chart Start -->
       <div class="container-fluid pt-4 px-4">
@@ -658,6 +666,7 @@ watch(
       <!-- Sales Chart End -->
 
       <!-- Recent Sales Start -->
+
       <div class="container-fluid pt-4 px-4">
         <div class="timeCountdown">
           <button class="btn btn-primary" @click="StartAndStopTimer">
@@ -665,10 +674,45 @@ watch(
           </button>
           <h6>更新倒數 : {{ seconds }}</h6>
         </div>
+        <!-- 分頁 -->
+        <nav>
+          <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button
+              class="nav-link active"
+              id="nav-home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-machine"
+              type="button"
+              role="tab"
+              aria-controls="nav-machine"
+              aria-selected="true"
+            >
+              機台
+            </button>
+            <button
+              class="nav-link"
+              id="nav-profile-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-workcode"
+              type="button"
+              role="tab"
+              aria-controls="nav-workcode"
+              aria-selected="false"
+              @click="test1"
+            >
+              工單
+            </button>
+          </div>
+        </nav>
+
         <div class="bg-secondary text-center rounded p-4">
-          <div class="table-responsive">
+          <div class="table-responsive tab-content" id="nav-tabContent">
+            <!-- 機台 -->
             <table
-              class="table text-start align-middle table-bordered table-hover mb-0"
+              id="nav-machine"
+              class="table text-start align-middle table-bordered table-hover mb-0 tab-pane fade show active"
+              role="tabpanel"
+              aria-labelledby="nav-machine-tab"
             >
               <thead>
                 <tr class="text-white">
@@ -695,7 +739,9 @@ watch(
                   <td>{{ data.LineName }}</td>
                   <td>{{ data.State }}</td>
                   <td
-                    :class="{ 'red-text': parseFloat(data.ModelSumTime) > 5.0 }"
+                    :class="{
+                      'red-text': parseFloat(data.ModelSumTime) > 5.0,
+                    }"
                   >
                     {{ data.ModelSumTime == 0 ? null : data.ModelSumTime }}
                   </td>
@@ -708,7 +754,9 @@ watch(
                   <td>{{ data.ACT }}</td>
                   <td>{{ data.AO }}</td>
                   <td
-                    :class="{ 'red-text': parseFloat(data.Performance) < 85.0 }"
+                    :class="{
+                      'red-text': parseFloat(data.Performance) < 85.0,
+                    }"
                   >
                     {{ data.Performance > 100 ? 99 : data.Performance }}
                   </td>
@@ -723,7 +771,83 @@ watch(
                     {{ parseFloat(data.YieId) === 0 ? "" : data.YieId }}
                   </td>
                   <td
-                    :class="{ 'red-text': parseFloat(data.AVGStopCount) > 0.5 }"
+                    :class="{
+                      'red-text': parseFloat(data.AVGStopCount) > 0.5,
+                    }"
+                  >
+                    {{ data.AVGStopCount }}
+                  </td>
+                  <td>{{ data.AllNGS }}</td>
+                </tr>
+              </tbody>
+            </table>
+            <!-- 工單 -->
+            <table
+              id="nav-workcode"
+              class="table text-start align-middle table-bordered table-hover mb-0 tab-pane fade"
+              role="tabpanel"
+              aria-labelledby="nav-workcode-tab"
+            >
+              <thead>
+                <tr class="text-white">
+                  <th scope="col">測試1</th>
+                  <th scope="col">測試2</th>
+                  <th scope="col">狀態時間(分鐘)</th>
+                  <th scope="col">工單編號</th>
+                  <th scope="col" hidden>產品</th>
+                  <th scope="col">產品名稱</th>
+                  <th scope="col">標準產能</th>
+                  <th scope="col">預計工時</th>
+                  <th scope="col">計畫工時</th>
+                  <th scope="col">實際工時</th>
+                  <th scope="col">實際產出量</th>
+                  <th scope="col">生產效率(85%)</th>
+                  <th scope="col">設備稼動率(85%)</th>
+                  <th scope="col">良率(98%)</th>
+                  <th scope="col">平均臨停次數(次/小時)</th>
+                  <th scope="col">總不良數</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="data in tempArrList" :key="data.id">
+                  <td>{{ data.LineName }}</td>
+                  <td>{{ data.State }}</td>
+                  <td
+                    :class="{
+                      'red-text': parseFloat(data.ModelSumTime) > 5.0,
+                    }"
+                  >
+                    {{ data.ModelSumTime == 0 ? null : data.ModelSumTime }}
+                  </td>
+                  <td>{{ data.WorkCode }}</td>
+                  <td hidden>{{ data.ProductName }}</td>
+                  <td>{{ data.Product_Name }}</td>
+                  <td>{{ data.SC }}</td>
+                  <td>{{ data.ETC }}</td>
+                  <td>{{ data.PT }}</td>
+                  <td>{{ data.ACT }}</td>
+                  <td>{{ data.AO }}</td>
+                  <td
+                    :class="{
+                      'red-text': parseFloat(data.Performance) < 85.0,
+                    }"
+                  >
+                    {{ data.Performance > 100 ? 99 : data.Performance }}
+                  </td>
+                  <td
+                    :class="{
+                      'red-text': parseFloat(data.Availability) < 85.0,
+                    }"
+                  >
+                    {{ data.Availability }}
+                  </td>
+                  <td :class="{ 'red-text': parseFloat(data.YieId) < 98.0 }">
+                    {{ parseFloat(data.YieId) === 0 ? "" : data.YieId }}
+                  </td>
+                  <td
+                    :class="{
+                      'red-text': parseFloat(data.AVGStopCount) > 0.5,
+                    }"
                   >
                     {{ data.AVGStopCount }}
                   </td>
@@ -736,6 +860,7 @@ watch(
       </div>
       <!-- Recent Sales End -->
     </div>
+
     <!-- Content End -->
   </div>
 </template>

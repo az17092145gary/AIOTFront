@@ -356,6 +356,7 @@ onMounted(() => {
                   <td>{{ ERRCodeitem.DeviceName }}</td>
                   <td>{{ formatDate(ERRCodeitem.Time) }}</td>
                   <td>{{ ERRCodeitem.Description }}</td>
+                  
                 </tr>
               </tbody>
             </table>
