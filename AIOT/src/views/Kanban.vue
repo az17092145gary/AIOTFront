@@ -21,14 +21,18 @@ const axios = inject("axios");
 const APIUrl = inject("APIUrl");
 const route = getCurrentInstance();
 const router = useRouter();
+const trunoffLoading = ref(false);
 const productList = ref([]);
 //分類名稱
 const itemName = ref(null);
 const itemList = ref([]);
 //產品名稱
 const productName = ref(null);
+//關機機台資料
+const arrCloseMachineList = ref([]);
 // 資料
 const arrList = ref([]);
+const arrWorkState = ref([]);
 const arrAvailabilityList = ref([]);
 const arrYieIdList = ref([]);
 const arrPerformanceList = ref([]);
@@ -39,6 +43,7 @@ const arrTargetAvailabilityList = ref([]);
 const arrTargetYieIdList = ref([]);
 const arrTargetPerformanceList = ref([]);
 const arrTargetAVGStopCountList = ref([]);
+
 // 暫存資料
 const tempArrList = ref([]);
 const tempBarArrList = ref([]);
@@ -309,7 +314,7 @@ const getKanBanProduct = (value) => {
         productName.value = productList.value[0];
       }
 
-      getKanBanData(itemName.value);
+      // getKanBanData();
     })
     .catch((err) => {
       if (err.code === "ERR_NETWORK") {
@@ -322,16 +327,17 @@ const getKanBanProduct = (value) => {
       }
     });
 };
-const getKanBanData = (value) => {
-  // console.log(new Date());
+const getKanBanData = () => {
   axios({
     method: "get",
     url: APIUrl + "getKanBanData",
-    params: { item: value },
+    params: { item: itemName.value, product: productName.value },
   })
     .then((res) => {
-      arrList.value = res.data;
-      tempArrList.value = res.data;
+      console.log(res);
+      arrList.value = res.data.kanBanDatas;
+      tempArrList.value = res.data.kanBanDatas;
+      arrCloseMachineList.value = res.data.closeMachineList;
       productClick(productName.value);
     })
     .catch((err) => {
@@ -538,17 +544,13 @@ const StartAndStopTimer = () => {
     timer.value = setInterval(() => {
       if (seconds.value === 0) {
         seconds.value = 15;
-        getKanBanData(itemName.value);
+        getKanBanData();
       } else {
         seconds.value--;
       }
     }, 1000);
     btntimeCountdown.value = "Stop";
   }
-};
-const test1 = () => {
-  console.log(itemName.value);
-  console.log(productName.value);
 };
 onMounted(() => {
   itemName.value = route.proxy.$router.currentRoute.value.query.targetItem;
@@ -568,15 +570,40 @@ onUnmounted(() => {
   if (timer.value) clearInterval(timer.value);
 });
 
-//監控傳遞的參數如果有變的話，更新ItemName
+//監控targetItem參數變化時更新螢幕畫面
+//2024-07-26更改
 watch(
-  () => route.proxy.$router.currentRoute.value.query.item,
+  () => route.proxy.$router.currentRoute.value.query.targetItem,
   (newValue) => {
-    itemName.value = newValue;
+    itemClick(newValue);
+  }
+);
+watch(
+  () => productName.value,
+  (newValue) => {
+    trunoffLoading.value = true;
+    getKanBanData();
+    axios({
+      method: "get",
+      url: APIUrl + "getWorkState",
+      params: { product: newValue },
+    })
+      .then((res) => {
+        arrWorkState.value = res.data;
+        trunoffLoading.value = false;
+      })
+      .catch((err) => {
+        if (err.code === "ERR_NETWORK") {
+          alert("查詢異常");
+          return;
+        }
+        trunoffLoading.value = false;
+      });
   }
 );
 </script>
 <template>
+  <Loading v-if="trunoffLoading" />
   <div
     class="container-fluid position-relative d-flex p-0"
     style="background: black"
@@ -604,6 +631,12 @@ watch(
           </button>
         </div>
       </nav>
+      <div>
+        <h4 style="color: white">機台關機</h4>
+        <div v-for="data in arrCloseMachineList">
+          <div style="color: red; font-weight: 600">{{ data }}</div>
+        </div>
+      </div>
     </div>
     <!-- Sidebar End -->
 
@@ -698,7 +731,6 @@ watch(
               role="tab"
               aria-controls="nav-workcode"
               aria-selected="false"
-              @click="test1"
             >
               工單
             </button>
@@ -790,68 +822,40 @@ watch(
             >
               <thead>
                 <tr class="text-white">
-                  <th scope="col">測試1</th>
-                  <th scope="col">測試2</th>
-                  <th scope="col">狀態時間(分鐘)</th>
                   <th scope="col">工單編號</th>
-                  <th scope="col" hidden>產品</th>
+                  <th scope="col">產品編號</th>
                   <th scope="col">產品名稱</th>
-                  <th scope="col">標準產能</th>
-                  <th scope="col">預計工時</th>
-                  <th scope="col">計畫工時</th>
-                  <th scope="col">實際工時</th>
-                  <th scope="col">實際產出量</th>
-                  <th scope="col">生產效率(85%)</th>
-                  <th scope="col">設備稼動率(85%)</th>
-                  <th scope="col">良率(98%)</th>
-                  <th scope="col">平均臨停次數(次/小時)</th>
-                  <th scope="col">總不良數</th>
+                  <th scope="col">工單數量(pcs)</th>
+                  <th scope="col">未下線數量(pcs)</th>
+                  <th scope="col">良品數(pcs)</th>
+                  <th scope="col">不良品數(pcs)</th>
+                  <th scope="col">工單完成率(%)</th>
+                  <th scope="col">完工數量(pcs)</th>
+                  <th scope="col">工單完工率(%)</th>
+                  <th scope="col">預計開工日期</th>
+                  <th scope="col">預計完工日期</th>
+                  <th scope="col">客戶名稱</th>
+                  <th scope="col">訂單編號</th>
+                  <th scope="col">規格</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="data in tempArrList" :key="data.id">
-                  <td>{{ data.LineName }}</td>
-                  <td>{{ data.State }}</td>
-                  <td
-                    :class="{
-                      'red-text': parseFloat(data.ModelSumTime) > 5.0,
-                    }"
-                  >
-                    {{ data.ModelSumTime == 0 ? null : data.ModelSumTime }}
-                  </td>
-                  <td>{{ data.WorkCode }}</td>
-                  <td hidden>{{ data.ProductName }}</td>
-                  <td>{{ data.Product_Name }}</td>
-                  <td>{{ data.SC }}</td>
-                  <td>{{ data.ETC }}</td>
-                  <td>{{ data.PT }}</td>
-                  <td>{{ data.ACT }}</td>
-                  <td>{{ data.AO }}</td>
-                  <td
-                    :class="{
-                      'red-text': parseFloat(data.Performance) < 85.0,
-                    }"
-                  >
-                    {{ data.Performance > 100 ? 99 : data.Performance }}
-                  </td>
-                  <td
-                    :class="{
-                      'red-text': parseFloat(data.Availability) < 85.0,
-                    }"
-                  >
-                    {{ data.Availability }}
-                  </td>
-                  <td :class="{ 'red-text': parseFloat(data.YieId) < 98.0 }">
-                    {{ parseFloat(data.YieId) === 0 ? "" : data.YieId }}
-                  </td>
-                  <td
-                    :class="{
-                      'red-text': parseFloat(data.AVGStopCount) > 0.5,
-                    }"
-                  >
-                    {{ data.AVGStopCount }}
-                  </td>
-                  <td>{{ data.AllNGS }}</td>
+                <tr v-for="data in arrWorkState">
+                  <td>{{ data.MONO }}</td>
+                  <td>{{ data.PRODUCTNO }}</td>
+                  <td>{{ data.PRODUCTNAME }}</td>
+                  <td>{{ data.MOQTY }}</td>
+                  <td>{{ data.UNRELEASELOTQTY }}</td>
+                  <td>{{ data.CURQTY }}</td>
+                  <td>{{ data.FAILQTY }}</td>
+                  <td>{{ data.WO_Completion_Count }}</td>
+                  <td>{{ data.Finished_Quantity }}</td>
+                  <td>{{ data.WO_Completion_Rate }}</td>
+                  <td>{{ data.Scheduled_Start_Date }}</td>
+                  <td>{{ data.Scheduled_Finish_Date }}</td>
+                  <td>{{ data.CUSTOMERSNAME }}</td>
+                  <td>{{ data.RONO }}</td>
+                  <td>{{ data.ItemSpec }}</td>
                 </tr>
               </tbody>
             </table>

@@ -22,6 +22,7 @@ const getItemData = () => {
     });
 };
 getItemData();
+
 </script>
 
 <template>

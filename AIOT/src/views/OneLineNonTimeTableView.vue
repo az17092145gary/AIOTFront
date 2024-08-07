@@ -236,7 +236,9 @@ onMounted(() => {
             <td>{{ item.Date }}</td>
             <td>{{ item.StartTime }}</td>
             <td>{{ item.EndTime }}</td>
-            <td>{{ item.SumTime }}</td>
+            <td :class="{ 'red-text': parseFloat(item.SumTime) > 30.0 }">
+              {{ item.SumTime }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -245,6 +247,9 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.red-text {
+  color: red;
+}
 thead {
   text-align: center;
 }
